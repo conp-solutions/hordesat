@@ -13,6 +13,7 @@ COPTIMIZE := -O3
 CXXFLAGS =	$(COPTIMIZE) -g -std=c++11 -Wall -fmessage-length=0 -I$(MINISRC) -I$(LGLSRC) -I$(CANDYSRC) -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS
 
 
+
 OBJS =		hordesat.o utilities/ClauseFilter.o solvers/MergeSat.o utilities/ClauseDatabase.o \
 			utilities/SatUtils.o utilities/Logger.o sharing/AllToAllSharingManager.o sharing/LogSharingManager.o
 #CXXFLAGS += -DUSE_CANDY
@@ -26,17 +27,20 @@ LIBS =		-L$(MINIBIN) -lmergesat
 LIBS +=     -lz -lpthread
 
 
+CXXFLAGS += -flto -fno-strict-aliasing
+LDFLAGS += -flto -fno-strict-aliasing
+
 hordesat: $(MINIBIN)/libmergesat.a
 
 $(MINIBIN)/libmergesat.a:
-		$(MAKE) -C $(WSPACE)/mergesat lr ld
+		$(MAKE) -C $(WSPACE)/mergesat lr ld CXX_EXTRA_FLAGS=-flto LD_EXTRA_FLAGS=-flto VERB=
 
 TARGET =	hordesat
 
 CXX = 		mpic++
 
 $(TARGET):	$(OBJS)
-		$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
+		$(CXX) -o $(TARGET) $(OBJS) $(LIBS) $(LDFLAGS)
 
 all:		$(TARGET)
 
