@@ -45,4 +45,5 @@ $(TARGET):	$(OBJS)
 all:		$(TARGET)
 
 clean:
+	$(MAKE) -C $(WSPACE)/mergesat clean
 	rm -f $(OBJS) $(TARGET)
