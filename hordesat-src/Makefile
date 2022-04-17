@@ -33,7 +33,7 @@ LDFLAGS += -flto -fno-strict-aliasing
 hordesat: $(MINIBIN)/libmergesat.a
 
 $(MINIBIN)/libmergesat.a:
-		$(MAKE) -C $(WSPACE)/mergesat lr ld CXX_EXTRA_FLAGS=-flto LD_EXTRA_FLAGS=-flto VERB=
+		$(MAKE) -C $(WSPACE)/mergesat lr ld CXX_EXTRA_FLAGS="-DNO_PREFETCHING -flto -fno-strict-aliasing" LD_EXTRA_FLAGS=-flto VERB=
 
 TARGET =	hordesat
 
